@@ -1,10 +1,10 @@
 package com.epam.dhontar.aqamp.utils.enums;
 
 public enum Constants {
-    //    SITE_URL("https://fakerestapi.azurewebsites.net/index.html"),
-    TESTRAIL_USER("dmitryhontar@gmail.com"),
-    TESTRAIL_PWD("9dz2N0faNpDowbPlulZu"),
-    TESTRAIL_URL("https://dmitryh.testrail.io/");
+    TESTRAIL_USER("dimahtest@gmail.com"),
+    TESTRAIL_PWD("?pKSTr8ApHo8MJGk"),
+    TESTRAIL_URL("https://aqadmitry.testrail.io/");
+
     private final String constantValue;
 
     Constants(String constantValue) {

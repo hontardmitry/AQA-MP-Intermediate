@@ -1,10 +1,11 @@
 package com.epam.dhontar.aqamp.utils.enums;
 
 public enum ServicesEndpoints {
+    //    SITE_URL("https://fakerestapi.azurewebsites.net/index.html"),
     BASE_URL("https://fakerestapi.azurewebsites.net/api/v1/"),
     AUTHORS_URL("Authors/"),
     USERS_URL("Users/"),
-    SLACK_API_URL("https://hooks.slack.com/services/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");
+    SLACK_API_URL("");
 
     private final String urlValue;
 
