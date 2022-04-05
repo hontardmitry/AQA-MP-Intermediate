@@ -4,21 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
-
-    private List messages;
-    private List<ChatObserver> observers;
-
-    public Chat() {
-        observers = new ArrayList<>();
-        messages = new ArrayList<>();
-    }
+    private List messages = new ArrayList<>();
+    private List<ChatObserver> observers = new ArrayList<>();
 
     public void addObserver(ChatObserver observer) {
         observers.add(observer);
-    }
-
-    public void removeObserver(ChatObserver observer) {
-        observers.remove(observer);
     }
 
     public void addMessage(String message) {

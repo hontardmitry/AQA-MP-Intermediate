@@ -1,8 +1,8 @@
 package com.epam.dhontar.aqamp;
 
-import static com.epam.dhontar.aqamp.utils.enums.Constants.TESTRAIL_PWD;
-import static com.epam.dhontar.aqamp.utils.enums.Constants.TESTRAIL_URL;
-import static com.epam.dhontar.aqamp.utils.enums.Constants.TESTRAIL_USER;
+import static com.epam.dhontar.aqamp.utils.enums.TestRailCredentials.TESTRAIL_PWD;
+import static com.epam.dhontar.aqamp.utils.enums.TestRailCredentials.TESTRAIL_URL;
+import static com.epam.dhontar.aqamp.utils.enums.TestRailCredentials.TESTRAIL_USER;
 
 import static java.lang.String.format;
 
@@ -17,13 +17,12 @@ import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,13 +30,14 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class BaseTest {
-    private static final String USER_DIR = System.getProperty("user.dir");
-    private static final Path PATH = Paths.get(USER_DIR);
-    private static final String PROJECT_NAME = PATH.getFileName().toString();
+//    private static final String USER_DIR = System.getProperty("user.dir");
+//    private static final Path PATH = Paths.get(USER_DIR);
+//    private static final String PROJECT_NAME = PATH.getFileName().toString();
     String PROJECT_ID = "1";
 
     List<ChatSubscriber> subscribers = new ArrayList<>();
     APIClient client;
+    private String apiUrl;
     Chat chat = new Chat();
     int failedTests = 0;
     int totalRunTests = 0;
@@ -49,13 +49,17 @@ public abstract class BaseTest {
             chat.addObserver(subscribers.get(i));
         }
         chat.addObserver(new SlackClient());
+    }
 
+    @BeforeClass
+    public void beforeClass(ITestContext ctx) throws IOException, APIException{
         client = new APIClient(TESTRAIL_URL.getValue());
         client.setUser(TESTRAIL_USER.getValue());
         client.setPassword(TESTRAIL_PWD.getValue());
+
         Map data = new HashMap();
         data.put("include_all", true);
-        data.put("name", "Test Run of " + PROJECT_NAME + " on " + LocalDateTime.now());
+        data.put("name", "Test Run of " + " on " + LocalDateTime.now());
         JSONObject c = (JSONObject) client.sendPost("add_run/" + PROJECT_ID, data);
         Long suite_id = (Long) c.get("id");
         ctx.setAttribute("suiteId", suite_id);
