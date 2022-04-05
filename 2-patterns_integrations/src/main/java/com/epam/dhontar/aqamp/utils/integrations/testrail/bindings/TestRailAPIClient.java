@@ -12,6 +12,10 @@
  
 package com.epam.dhontar.aqamp.utils.integrations.testrail.bindings;
 
+import static com.epam.dhontar.aqamp.utils.enums.TestRailCredentials.TESTRAIL_PWD;
+import static com.epam.dhontar.aqamp.utils.enums.TestRailCredentials.TESTRAIL_URL;
+import static com.epam.dhontar.aqamp.utils.enums.TestRailCredentials.TESTRAIL_USER;
+
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
@@ -31,51 +35,18 @@ import java.net.URL;
 import java.util.Base64;
 
 
-public class APIClient
+public class TestRailAPIClient
 {
 	private String m_user;
 	private String m_password;
 	private String m_url;
 
-	public APIClient(String base_url)
-	{
-		if (!base_url.endsWith("/"))
-		{
-			base_url += "/";
-		}
-		
-		this.m_url = base_url + "index.php?/api/v2/";
+	public TestRailAPIClient(){
+		this.m_url = TESTRAIL_URL.getValue() + "index.php?/api/v2/";
+		this.m_user = TESTRAIL_USER.getValue();
+		this.m_password = TESTRAIL_PWD.getValue();
 	}
 
-	/**
-	 * Get/Set User
-	 *
-	 * Returns/sets the user used for authenticating the API requests.
-	 */
-	public String getUser()
-	{
-		return this.m_user;
-	}
-
-	public void setUser(String user)
-	{
-		this.m_user = user;
-	}
-
-	/**
-	 * Get/Set Password
-	 *
-	 * Returns/sets the password used for authenticating the API requests.
-	 */
-	public String getPassword()
-	{
-		return this.m_password;
-	}
-
-	public void setPassword(String password)
-	{
-		this.m_password = password;
-	}
 
 	/**
 	 * Send Get
