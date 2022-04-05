@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Chat {
-    private List messages = new ArrayList<>();
+    private List<String> messages = new ArrayList<>();
     private List<ChatObserver> observers = new ArrayList<>();
 
     public void addObserver(ChatObserver observer) {

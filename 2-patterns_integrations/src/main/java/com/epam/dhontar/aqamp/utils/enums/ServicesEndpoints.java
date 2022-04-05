@@ -1,7 +1,6 @@
 package com.epam.dhontar.aqamp.utils.enums;
 
 public enum ServicesEndpoints {
-    //    SITE_URL("https://fakerestapi.azurewebsites.net/index.html"),
     BASE_URL("https://fakerestapi.azurewebsites.net/api/v1/"),
     AUTHORS_URL("Authors/"),
     USERS_URL("Users/"),
