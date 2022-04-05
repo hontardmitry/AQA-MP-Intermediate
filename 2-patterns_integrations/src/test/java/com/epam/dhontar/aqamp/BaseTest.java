@@ -6,8 +6,8 @@ import com.epam.dhontar.aqamp.observer.Chat;
 import com.epam.dhontar.aqamp.observer.ChatSubscriber;
 import com.epam.dhontar.aqamp.utils.integrations.slack.SlackClient;
 import com.epam.dhontar.aqamp.utils.integrations.testrail.TestRails;
-import com.epam.dhontar.aqamp.utils.integrations.testrail.bindings.TestRailAPIClient;
 import com.epam.dhontar.aqamp.utils.integrations.testrail.bindings.APIException;
+import com.epam.dhontar.aqamp.utils.integrations.testrail.bindings.TestRailAPIClient;
 import org.json.simple.JSONObject;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
@@ -20,7 +20,6 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -42,9 +41,9 @@ public abstract class BaseTest {
         }
         chat.addObserver(new SlackClient());
 
-        Map <String, Object> data = new HashMap();
-        data.put("include_all", true);
-        data.put("name", "Test Run on " + LocalDateTime.now());
+        Map <String, Object> data =
+            Map.of("include_all", true, "name", "Test Run on " + LocalDateTime.now());
+
         JSONObject c = (JSONObject) testRailAPIClient.sendPost("add_run/" + PROJECT_ID, data);
         Long suite_id = (Long) c.get("id");
         ctx.setAttribute("suiteId", suite_id);
@@ -66,12 +65,12 @@ public abstract class BaseTest {
     public void afterTest(ITestResult result, ITestContext ctx, Method method)
         throws IOException, APIException {
 
-        Map<String, Object> data = new HashMap();
-        if (result.isSuccess()) {
-            data.put("status_id", 1);
-        } else {
-            data.put("status_id", 5);
-            data.put("comment", result.getThrowable().toString());
+        Map<String, Object> data =
+            result.isSuccess() ?
+                Map.of("status_id", 1) :
+                Map.of("status_id", 5, "comment", result.getThrowable().toString());
+
+        if (!result.isSuccess()) {
             chat.addMessage(format("Test %s FAILED with %s", method.getName(), result.getThrowable().toString()));
             failedTests++;
         }
