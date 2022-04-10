@@ -1,10 +1,11 @@
 package com.epam.dhontar.aqamp;
 
 
-import static com.epam.dhontar.aqamp.utils.enums.ServicesEndpoints.USERS_URL;
+import static com.epam.dhontar.aqamp.utils.enums.RestEndpoints.USERS;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.epam.dhontar.aqamp.api.ClientManager;
 import com.epam.dhontar.aqamp.api.RestClient;
 import com.epam.dhontar.aqamp.entity.User;
 import com.epam.dhontar.aqamp.utils.integrations.testrail.TestRails;
@@ -20,7 +21,8 @@ public class UsersTests extends BaseTest {
     private static final String USER_NAME = "User Name";
     private static final String USER_PASSWORD = "password";
 
-    private final RestClient userClient = new RestClient(USERS_URL);
+    private final ClientManager clientManager = new ClientManager();
+    private final RestClient userClient = clientManager.createClient(USERS);
 
     @Test(priority = 2)
     @TestRails(id = "1")

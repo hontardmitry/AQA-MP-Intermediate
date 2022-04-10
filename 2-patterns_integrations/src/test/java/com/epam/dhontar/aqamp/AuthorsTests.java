@@ -1,10 +1,11 @@
 package com.epam.dhontar.aqamp;
 
 
-import static com.epam.dhontar.aqamp.utils.enums.ServicesEndpoints.AUTHORS_URL;
+import static com.epam.dhontar.aqamp.utils.enums.RestEndpoints.AUTHORS;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 
+import com.epam.dhontar.aqamp.api.ClientManager;
 import com.epam.dhontar.aqamp.api.RestClient;
 import com.epam.dhontar.aqamp.entity.Author;
 import com.epam.dhontar.aqamp.utils.integrations.testrail.TestRails;
@@ -23,12 +24,13 @@ public class AuthorsTests extends BaseTest {
     private static final String FIRST_NAME = "User Name";
     private static final String LAST_NAME = "password";
 
-    private final RestClient authorClient = new RestClient(AUTHORS_URL);
+    private final ClientManager clientManager = new ClientManager();
+    private final RestClient authorsClient = clientManager.createClient(AUTHORS);
 
     @Test(priority = 5)
     @TestRails(id = "4")
     public void getAuthorById() {
-        Response response = authorClient.getEntityById(5);
+        Response response = authorsClient.getEntityById(5);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
         assertThat(response.as(Author.class).getId()).isEqualTo(5);
     }
@@ -41,7 +43,7 @@ public class AuthorsTests extends BaseTest {
             .withFirstName(FIRST_NAME)
             .withLastName(LAST_NAME)
             .build();
-        Response response = authorClient.postEntity(author);
+        Response response = authorsClient.postEntity(author);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
         assertThat(response.as(Author.class).getId()).isEqualTo(AUTHOR_ID);
     }
@@ -50,7 +52,7 @@ public class AuthorsTests extends BaseTest {
     @Test(priority = 6)
     @TestRails(id = "6")
     public void deleteAuthor() {
-        Response response = authorClient.deleteEntity(5);
+        Response response = authorsClient.deleteEntity(5);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
     }
 }
