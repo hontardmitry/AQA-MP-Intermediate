@@ -1,8 +1,8 @@
 package com.epam.dhontar.aqamp.utils.enums;
 
 public enum RestEndpoints {
-    AUTHORS("Authors/"),
-    USERS("Users/");
+    AUTHORS("https://fakerestapi.azurewebsites.net/api/v1/Authors/"),
+    USERS("https://fakerestapi.azurewebsites.net/api/v1/Users/");
 
     private final String urlValue;
 
