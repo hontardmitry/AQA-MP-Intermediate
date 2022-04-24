@@ -2,6 +2,7 @@ package com.epam.dhontar.aqamp;
 
 import static java.lang.String.format;
 
+import com.epam.dhontar.aqamp.api.RestClient;
 import com.epam.dhontar.aqamp.observer.Chat;
 import com.epam.dhontar.aqamp.observer.ChatSubscriber;
 import com.epam.dhontar.aqamp.utils.integrations.slack.SlackClient;
@@ -12,7 +13,6 @@ import org.json.simple.JSONObject;
 import org.testng.ITestContext;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeSuite;
 
@@ -24,19 +24,19 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class BaseTest {
+    RestClient restClient = new RestClient();
+
     String PROJECT_ID = "1";
 
     List<ChatSubscriber> subscribers = new ArrayList<>();
     TestRailAPIClient testRailAPIClient = new TestRailAPIClient();
 
     Chat chat = new Chat();
-    int failedTests = 0;
-    int totalRunTests = 0;
 
     @BeforeSuite
     public void createSuite(ITestContext ctx) throws IOException, APIException {
         for (int i = 0; i < 2; i++){
-            subscribers.add(new ChatSubscriber("Subscriber" + i));
+            subscribers.add(new ChatSubscriber("Subscriber" + (i + 1)));
             chat.addObserver(subscribers.get(i));
         }
         chat.addObserver(new SlackClient());
@@ -57,7 +57,6 @@ public abstract class BaseTest {
             TestRails ta = m.getAnnotation(TestRails.class);
             System.out.println(ta.id());
             ctx.setAttribute("caseId", ta.id());
-            totalRunTests++;
         }
     }
 
@@ -72,7 +71,6 @@ public abstract class BaseTest {
 
         if (!result.isSuccess()) {
             chat.addMessage(format("Test %s FAILED with %s", method.getName(), result.getThrowable().toString()));
-            failedTests++;
         }
 
         String caseId = (String) ctx.getAttribute("caseId");
@@ -80,8 +78,4 @@ public abstract class BaseTest {
         testRailAPIClient.sendPost("add_result_for_case/" + suiteId + "/" + caseId, data);
     }
 
-    @AfterSuite
-    public void notifySubscribersWithOverallStatistics(){
-        chat.addMessage(format("Total tests run: %s, failed: %s", totalRunTests, failedTests));
-    }
 }

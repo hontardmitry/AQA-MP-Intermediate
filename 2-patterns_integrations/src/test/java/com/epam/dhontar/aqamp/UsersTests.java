@@ -1,12 +1,10 @@
 package com.epam.dhontar.aqamp;
 
-
-import static com.epam.dhontar.aqamp.utils.enums.RestEndpoints.USERS;
+import static com.epam.dhontar.aqamp.utils.enums.PersonType.USER;
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.assertj.core.api.Assertions.assertThat;
 
-import com.epam.dhontar.aqamp.api.ClientManager;
-import com.epam.dhontar.aqamp.api.RestClient;
+import com.epam.dhontar.aqamp.entity.PersonFactory;
 import com.epam.dhontar.aqamp.entity.User;
 import com.epam.dhontar.aqamp.utils.integrations.testrail.TestRails;
 import com.epam.reportportal.testng.ReportPortalTestNGListener;
@@ -21,13 +19,10 @@ public class UsersTests extends BaseTest {
     private static final String USER_NAME = "User Name";
     private static final String USER_PASSWORD = "password";
 
-    private final ClientManager clientManager = new ClientManager();
-    private final RestClient userClient = clientManager.createClient(USERS);
-
     @Test(priority = 2)
     @TestRails(id = "1")
     public void getUserById() {
-        Response response = userClient.getEntityById(5);
+        Response response = restClient.getEntityById(USER,5);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
         assertThat(response.as(User.class).getId()).isEqualTo(5);
     }
@@ -35,12 +30,12 @@ public class UsersTests extends BaseTest {
     @Test(priority = 1)
     @TestRails(id = "2")
     public void createUser() {
-        User user = new User
-            .UserBuilder(USER_ID)
+        User userEntity =  ((User) PersonFactory.createPerson(USER, USER_ID))
+            .getBuilder()
             .withName(USER_NAME)
             .withPassword(USER_PASSWORD)
             .build();
-        Response response = userClient.postEntity(user);
+        Response response = restClient.postEntity(USER, userEntity);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
         assertThat(response.as(User.class).getId()).isEqualTo(USER_ID + 1);
     }
@@ -48,7 +43,7 @@ public class UsersTests extends BaseTest {
     @Test(priority = 3)
     @TestRails(id = "3")
     public void deleteUser() {
-        Response response = userClient.deleteEntity(5);
+        Response response = restClient.deleteEntity(USER,5);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
     }
 }

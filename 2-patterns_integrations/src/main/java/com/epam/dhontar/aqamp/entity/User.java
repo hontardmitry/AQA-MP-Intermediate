@@ -1,12 +1,11 @@
 package com.epam.dhontar.aqamp.entity;
 
-public class User {
-    private int id;
+public class User extends Person{
     private String userName;
     private String password;
 
-    private User(UserBuilder builder) {
-        this.id = builder.id;
+    private User(Builder builder) {
+        this.setId(builder.id);
         this.userName = builder.userName;
         this.password = builder.password;
     }
@@ -14,8 +13,8 @@ public class User {
     private User() {
     }
 
-    public int getId() {
-        return id;
+    public Builder getBuilder(){
+        return new Builder(this.getId(), this.userName, this.password);
     }
 
     public String getUserName() {
@@ -26,22 +25,28 @@ public class User {
         return password;
     }
 
-    public static class UserBuilder {
+    public static class Builder {
 
         private int id;
         private String userName;
         private String password;
 
-        public UserBuilder(int id) {
+        public Builder(int id) {
             this.id = id;
         }
 
-        public UserBuilder withName(String userName) {
+        public Builder(int id, String userName, String password) {
+            this.id = id;
+            this.userName = userName;
+            this.password = password;
+        }
+
+        public Builder withName(String userName) {
             this.userName = userName;
             return this;
         }
 
-        public UserBuilder withPassword(String password) {
+        public Builder withPassword(String password) {
             this.password = password;
             return this;
         }
@@ -50,5 +55,4 @@ public class User {
             return new User(this);
         }
     }
-
 }
