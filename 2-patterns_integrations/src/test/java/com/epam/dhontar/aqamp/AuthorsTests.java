@@ -1,19 +1,17 @@
 package com.epam.dhontar.aqamp;
 
 
-import static com.epam.dhontar.aqamp.utils.enums.PersonType.AUTHOR;
-import static org.apache.http.HttpStatus.SC_OK;
-import static org.assertj.core.api.Assertions.assertThat;
-
 import com.epam.dhontar.aqamp.entity.Author;
 import com.epam.dhontar.aqamp.entity.PersonFactory;
 import com.epam.dhontar.aqamp.utils.integrations.testrail.TestRails;
 import com.epam.reportportal.testng.ReportPortalTestNGListener;
-import org.testng.annotations.Ignore;
+import io.restassured.response.Response;
 import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 
-import io.restassured.response.Response;
+import static com.epam.dhontar.aqamp.utils.enums.PersonType.AUTHOR;
+import static org.apache.http.HttpStatus.SC_OK;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @Listeners({ReportPortalTestNGListener.class})
 public class AuthorsTests extends BaseTest {
@@ -34,7 +32,7 @@ public class AuthorsTests extends BaseTest {
 
     @Test(priority = 4)
     @TestRails(id = "6")
-    public void createAuthor() throws IllegalAccessException {
+    public void createAuthor(){
         Author authorEntity = ((Author) PersonFactory.createPerson(AUTHOR, AUTHOR_ID))
             .getBuilder()
             .withIdBook(ID_BOOK)
@@ -46,7 +44,7 @@ public class AuthorsTests extends BaseTest {
         assertThat(response.as(Author.class).getId()).isEqualTo(AUTHOR_ID);
     }
 
-    @Ignore
+//    @Ignore
     @Test(priority = 6)
     @TestRails(id = "7")
     public void deleteAuthor() {
