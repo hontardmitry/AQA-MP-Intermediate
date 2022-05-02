@@ -25,7 +25,7 @@ public class AuthorsTests extends BaseTest {
 
 
     @Test(priority = 5)
-    @TestRails(id = "4")
+    @TestRails(id = "5")
     public void getAuthorById() {
         Response response = restClient.getEntityById(AUTHOR,5);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
@@ -33,7 +33,7 @@ public class AuthorsTests extends BaseTest {
     }
 
     @Test(priority = 4)
-    @TestRails(id = "5")
+    @TestRails(id = "6")
     public void createAuthor() throws IllegalAccessException {
         Author authorEntity = ((Author) PersonFactory.createPerson(AUTHOR, AUTHOR_ID))
             .getBuilder()
@@ -41,7 +41,6 @@ public class AuthorsTests extends BaseTest {
             .withFirstName(FIRST_NAME)
             .withLastName(LAST_NAME)
             .build();
-        System.out.println(authorEntity.toJson());
         Response response = restClient.postEntity(AUTHOR, authorEntity);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
         assertThat(response.as(Author.class).getId()).isEqualTo(AUTHOR_ID);
@@ -49,7 +48,7 @@ public class AuthorsTests extends BaseTest {
 
     @Ignore
     @Test(priority = 6)
-    @TestRails(id = "6")
+    @TestRails(id = "7")
     public void deleteAuthor() {
         Response response = restClient.deleteEntity(AUTHOR,5);
         assertThat(response.statusCode()).as("Status code").isEqualTo(SC_OK);
