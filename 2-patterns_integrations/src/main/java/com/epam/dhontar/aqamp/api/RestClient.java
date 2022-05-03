@@ -1,22 +1,14 @@
 package com.epam.dhontar.aqamp.api;
 
-import static com.epam.dhontar.aqamp.utils.enums.ServicesEndpoints.API_BASE_URL;
-
-import static io.restassured.RestAssured.given;
-
 import com.epam.dhontar.aqamp.entity.Person;
 import com.epam.dhontar.aqamp.utils.enums.PersonType;
-
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 
-public class RestClient {
-//    private String url;
-//
-//    public void setUrl(String url){
-//        this.url = url;
-//    }
+import static com.epam.dhontar.aqamp.utils.enums.ServicesEndpoints.API_BASE_URL;
+import static io.restassured.RestAssured.given;
 
+public class RestClient {
     public Response getEntityById(PersonType personType, int id) {
         return given()
                 .contentType(ContentType.JSON)
@@ -43,8 +35,4 @@ public class RestClient {
         }
         return null;
     }
-
-//    public RestClient(ServicesEndpoints endpoint){
-//        this.url = BASE_URL.getValue() + endpoint.getValue();
-//    }
 }
